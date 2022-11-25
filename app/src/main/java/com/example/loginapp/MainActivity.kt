@@ -238,9 +238,4 @@ fun Login(auth: FirebaseAuth){
 
 }
 
-@Preview
-@Composable
-fun prev(){
-
-}
 
