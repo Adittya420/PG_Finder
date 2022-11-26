@@ -2,6 +2,7 @@ package com.example.loginapp
 
 import android.content.ContentValues.TAG
 import android.nfc.Tag
+import androidx.compose.material.Typography
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -26,6 +27,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +47,13 @@ class MainActivity : ComponentActivity() {
     private val auth by lazy {
         Firebase.auth
     }
+    val MyCustomTypography = Typography(
+        body1 = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Normal,
+            fontSize = 18.sp
+        )
+    )
     companion object{
         val Tag : String = MainActivity :: class.java.simpleName
     }
@@ -84,23 +93,40 @@ fun Login(auth: FirebaseAuth){
 
     Column(modifier = Modifier
         .background(Color.White)
-        .fillMaxSize(),
+        .fillMaxSize()
+        .padding(bottom = 130.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Top) {
-//        Image(painter = painterResource(id = R.drawable.pexels_img), contentDescription ="" ,
-//        modifier = Modifier.fillMaxSize())
-        
-        Text(text = "Welcome back........",
-        fontFamily = FontFamily.Companion.SansSerif,
-            fontWeight = FontWeight.Bold,
-            fontStyle = FontStyle.Italic,
-            fontSize = 30.sp,
-            modifier = Modifier.padding(top = 16.dp)
-        )
-        Image(painter = painterResource(id = R.drawable.image_login),
+    verticalArrangement = Arrangement.Bottom) {
+        Image(painter = painterResource(id = R.drawable.image_login_new),
             contentDescription = "Login Image",
             modifier = Modifier.size(200.dp)
             )
+//        Image(painter = painterResource(id = R.drawable.pexels_img), contentDescription ="" ,
+//        modifier = Modifier.fillMaxSize())
+        
+
+        MaterialTheme(typography = MyCustomTypography) {
+            Text(text = "Login",
+                style = MaterialTheme.typography.overline,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Normal,
+                fontSize = 30.sp,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        }
+        MaterialTheme(typography = MyCustomTypography) {
+            Text(text = "Please sign in to continue",
+                style = MaterialTheme.typography.overline,
+                color = Color.DarkGray,
+                fontStyle = FontStyle.Normal,
+                fontSize = 15.sp,
+                modifier = Modifier.padding( bottom = 16.dp)
+            )
+
+//        Image(painter = painterResource(id = R.drawable.image_login),
+//            contentDescription = "Login Image",
+//            modifier = Modifier.size(200.dp)
+//            )
 
 
 //        Text(text = "Hello Sir",
@@ -112,18 +138,22 @@ fun Login(auth: FirebaseAuth){
 //        )
         Card(modifier = Modifier
             .padding(horizontal = 8.dp),
-        shape = RoundedCornerShape(16.dp),
+            shape = MaterialTheme.shapes.large,
             border = BorderStroke(1.dp, color = Color.White)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(all = 10.dp),) {
-               OutlinedTextField(value = email, onValueChange ={email = it},
+            modifier = Modifier
+                .background(color = Color.White)
+                .padding(all = 10.dp),) {
+               OutlinedTextField(value = email, colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Black), onValueChange ={email = it},
                label = {
-                   Text(text = "Email Address")
+                   Text(text = "Email Address",
+                   color = Color.Black)
                },
                placeholder = {
-                   Text(text = "example123@gmail.com")
+                   Text(text = "example123@gmail.com",
+                       color = Color.DarkGray)
                },
                singleLine = true,
                    modifier = Modifier,
@@ -146,12 +176,14 @@ fun Login(auth: FirebaseAuth){
                    }
                )
 
-                OutlinedTextField(value = password, onValueChange ={password = it},
+                OutlinedTextField(value = password,colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Black), onValueChange ={password = it},
                     label = {
-                        Text(text = "Password")
+                        Text(text = "Password",
+                            color = Color.Black)
                     },
                     placeholder = {
-                        Text(text = "guyff5677")
+                        Text(text = "guyff5677",
+                            color = Color.DarkGray)
                     },
                     singleLine = true,
                     modifier = Modifier,
@@ -204,10 +236,7 @@ fun Login(auth: FirebaseAuth){
                     modifier = Modifier.padding(end = 8.dp)
 
                 )
-
-
             }
-
         }
         Button(onClick =  {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
@@ -220,22 +249,17 @@ fun Login(auth: FirebaseAuth){
             }
         },
         enabled = isEmailValid && isPasswordValid,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(all = 8.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Cyan)) {
-            Text(text = "Login",
+        colors = ButtonDefaults.buttonColors()) {
+            Text(text = "Login ",
             fontWeight = FontWeight.Bold,
             color = Color.White,
             fontSize = 16.sp)
-
-
         }
 }
 }
 
 
-
+}
 }
 
 
