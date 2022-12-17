@@ -1,11 +1,16 @@
 package com.example.loginapp
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.nfc.Tag
 import androidx.compose.material.Typography
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -27,7 +32,6 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,13 +46,17 @@ import com.example.loginapp.ui.theme.LoginAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import org.w3c.dom.Text
+import java.time.format.TextStyle
+import kotlin.properties.Delegates
+
 
 class MainActivity : ComponentActivity() {
     private val auth by lazy {
         Firebase.auth
     }
     val MyCustomTypography = Typography(
-        body1 = TextStyle(
+        body1 = androidx.compose.ui.text.TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Normal,
             fontSize = 18.sp
@@ -67,61 +75,66 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-@Composable
-fun Login(auth: FirebaseAuth){
+    @Composable
+    fun Login(auth: FirebaseAuth) {
 
-    val focusManager = LocalFocusManager.current
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
+        val focusManager = LocalFocusManager.current
+        var email by remember {
+            mutableStateOf("")
+        }
+        var password by remember {
+            mutableStateOf("")
+        }
 
-    val isEmailValid by derivedStateOf {
-        Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
+        val isEmailValid by derivedStateOf {
+            Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        }
 
-    val isPasswordValid by derivedStateOf {
-        password.length > 7
-    }
+        val isPasswordValid by derivedStateOf {
+            password.length > 7
+        }
 
-    val isPasswordVisible by remember {
-        mutableStateOf(false)
-    }
+        val isPasswordVisible by remember {
+            mutableStateOf(false)
+        }
 
 
-    Column(modifier = Modifier
-        .background(Color.White)
-        .fillMaxSize()
-        .padding(bottom = 130.dp),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Bottom) {
-        Image(painter = painterResource(id = R.drawable.image_login_new),
-            contentDescription = "Login Image",
-            modifier = Modifier.size(200.dp)
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize()
+                .padding(bottom = 130.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.image_login_new),
+                contentDescription = "Login Image",
+                modifier = Modifier.size(200.dp)
             )
 //        Image(painter = painterResource(id = R.drawable.pexels_img), contentDescription ="" ,
 //        modifier = Modifier.fillMaxSize())
-        
 
-        MaterialTheme(typography = MyCustomTypography) {
-            Text(text = "Login",
-                style = MaterialTheme.typography.overline,
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Normal,
-                fontSize = 30.sp,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-        }
-        MaterialTheme(typography = MyCustomTypography) {
-            Text(text = "Please sign in to continue",
-                style = MaterialTheme.typography.overline,
-                color = Color.DarkGray,
-                fontStyle = FontStyle.Normal,
-                fontSize = 15.sp,
-                modifier = Modifier.padding( bottom = 16.dp)
-            )
+
+            MaterialTheme(typography = MyCustomTypography) {
+                Text(
+                    text = "Login",
+                    style = MaterialTheme.typography.overline,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 30.sp,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
+            MaterialTheme(typography = MyCustomTypography) {
+                Text(
+                    text = "Please sign in to continue",
+                    style = MaterialTheme.typography.overline,
+                    color = Color.DarkGray,
+                    fontStyle = FontStyle.Normal,
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
 //        Image(painter = painterResource(id = R.drawable.image_login),
 //            contentDescription = "Login Image",
@@ -136,130 +149,142 @@ fun Login(auth: FirebaseAuth){
 //            fontSize = 30.sp,
 //            modifier = Modifier.padding(top = 16.dp)
 //        )
-        Card(modifier = Modifier
-            .padding(horizontal = 8.dp),
-            shape = MaterialTheme.shapes.large,
-            border = BorderStroke(1.dp, color = Color.White)
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .background(color = Color.White)
-                .padding(all = 10.dp),) {
-               OutlinedTextField(value = email, colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Black), onValueChange ={email = it},
-               label = {
-                   Text(text = "Email Address",
-                   color = Color.Black)
-               },
-               placeholder = {
-                   Text(text = "example123@gmail.com",
-                       color = Color.DarkGray)
-               },
-               singleLine = true,
-                   modifier = Modifier,
-                   keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                       imeAction = ImeAction.Next
-                   ),
-                   keyboardActions = KeyboardActions(
-                       onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                   ),
-                   isError = !isEmailValid,
-                   trailingIcon = {
-                       if (email.isNotBlank()){
-                           IconButton(onClick = {email = ""}) {
-                               Icon(  imageVector = Icons.Filled.Clear ,
-                                   contentDescription = "Clear Email")
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp),
+                    shape = MaterialTheme.shapes.large,
+                    border = BorderStroke(1.dp, color = Color.White)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .background(color = Color.White)
+                            .padding(all = 10.dp),
+                    ) {
+                        OutlinedTextField(value = email,
+                            colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Black),
+                            onValueChange = { email = it },
+                            label = {
+                                Text(
+                                    text = "Email Address",
+                                    color = Color.Black
+                                )
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "example123@gmail.com",
+                                    color = Color.DarkGray
+                                )
+                            },
+                            singleLine = true,
+                            modifier = Modifier,
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Email,
+                                imeAction = ImeAction.Next
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                            ),
+                            isError = !isEmailValid,
+                            trailingIcon = {
+                                if (email.isNotBlank()) {
+                                    IconButton(onClick = { email = "" }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Clear,
+                                            contentDescription = "Clear Email"
+                                        )
 
-                           }
-                       }
-                   }
-               )
+                                    }
+                                }
+                            }
+                        )
 
-                OutlinedTextField(value = password,colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Black), onValueChange ={password = it},
-                    label = {
-                        Text(text = "Password",
-                            color = Color.Black)
-                    },
-                    placeholder = {
-                        Text(text = "guyff5677",
-                            color = Color.DarkGray)
-                    },
-                    singleLine = true,
-                    modifier = Modifier,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                    isError = !isPasswordValid,
-                    trailingIcon = {
-                            IconButton(onClick = {isPasswordVisible != isPasswordVisible}) {
-                                Icon(  imageVector = if(isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                contentDescription = "Toggle Password Visibility")
+                        OutlinedTextField(value = password,
+                            colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Black),
+                            onValueChange = { password = it },
+                            label = {
+                                Text(
+                                    text = "Password",
+                                    color = Color.Black
+                                )
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "guyff5677",
+                                    color = Color.DarkGray
+                                )
+                            },
+                            singleLine = true,
+                            modifier = Modifier,
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { focusManager.clearFocus() }
+                            ),
+                            isError = !isPasswordValid,
+                            trailingIcon = {
+                                IconButton(onClick = { isPasswordVisible != isPasswordVisible }) {
+                                    Icon(
+                                        imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                        contentDescription = "Toggle Password Visibility"
+                                    )
 
+                                }
+
+                            },
+                            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
+                        )
+                    }
+                }
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextButton(onClick = { /*TODO*/ }) {
+                        Text(
+                            color = Color.Black,
+                            fontStyle = FontStyle.Italic,
+                            text = "Forgot Password ?",
+                            modifier = Modifier.padding(end = 8.dp)
+
+                        )
+                    }
+                }
+                Button(
+                    onClick = {
+                        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                Log.d(TAG, "The user has succesfully logged in")
+//                    Toast.makeText( this,"The user has succesfully logged in", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Log.w(TAG, "Sorry! could'nt find the user", it.exception)
                             }
 
+                        }
                     },
-                    visualTransformation = if(isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
-                )
-//                Button(onClick = {
-//                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-//                        if (it.isSuccessful) {
-//                            Log.d(TAG, "The user has succesfully logged in")
-//                        } else {
-//                            Log.w(TAG, "Sorry! could'nt find the user", it.exception)
-//                        }
-//
-//                    }
-//                }) {
-//                    Text(text = "Login",
-//                        fontWeight = FontWeight.Bold,
-//                        fontSize = 16.sp,)
-//
-//                }
-
-
-
-            }
-
-        }
-        Row(horizontalArrangement = Arrangement.End,
-        modifier = Modifier.fillMaxWidth()) {
-            TextButton(onClick = { /*TODO*/ }) {
-                Text(
-                color = Color.Black,
-                fontStyle = FontStyle.Italic,
-                    text = "Forgot Password ?",
-                    modifier = Modifier.padding(end = 8.dp)
-
-                )
-            }
-        }
-        Button(onClick =  {
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Log.d(TAG, "The user has succesfully logged in")
-                } else {
-                    Log.w(TAG, "Sorry! could'nt find the user", it.exception)
+                    enabled = isEmailValid && isPasswordValid,
+                    colors = ButtonDefaults.buttonColors()
+                ) {
+                    Text(
+                        text = "Login ",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 16.sp
+                    )
                 }
-
+                Button(onClick = {
+                    val navigate = Intent(this@MainActivity, Registerpage::class.java)
+                    startActivity(navigate)
+                }) {
+                    Text(text = "New Registration")
+                }
             }
-        },
-        enabled = isEmailValid && isPasswordValid,
-        colors = ButtonDefaults.buttonColors()) {
-            Text(text = "Login ",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            fontSize = 16.sp)
         }
-}
+    }
 }
 
-
-}
-}
 
 
