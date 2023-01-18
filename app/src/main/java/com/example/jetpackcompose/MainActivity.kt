@@ -1,5 +1,6 @@
 package com.example.jetpackcompose
 
+import android.graphics.Color.parseColor
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
@@ -7,28 +8,32 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Yellow
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -47,6 +52,24 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ProfileScreen() {
+    val username1 = remember {
+        mutableStateOf(value = "")
+    }
+    val Age1 = remember {
+        mutableStateOf(value = "")
+    }
+    val Gender1 = remember {
+        mutableStateOf(value = "")
+    }
+    val Mob_No = remember {
+        mutableStateOf(value = "")
+    }
+    val E_mail = remember {
+        mutableStateOf(value = "")
+    }
+    val About1 = remember {
+        mutableStateOf(value = "")
+    }
 
     val notification = rememberSaveable { mutableStateOf("") }
     if (notification.value.isNotEmpty()) {
@@ -54,87 +77,257 @@ fun ProfileScreen() {
         notification.value = ""
     }
 
-    var name by rememberSaveable { mutableStateOf("default name") }
-    var username by rememberSaveable { mutableStateOf("default username") }
-    var bio by rememberSaveable { mutableStateOf("default bio") }
 
-    Column(
+    Box(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(8.dp)
+            .background(color = "#0b0a25".color) //dark blue
+            .fillMaxHeight()
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Cancel",
-                modifier = Modifier.clickable { notification.value = "Cancelled" })
-            Text(text = "Save",
-                modifier = Modifier.clickable { notification.value = "Profile updated" })
-        }
 
-        ProfileImage()
-
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 4.dp, end = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .verticalScroll(rememberScrollState())
+                .background(color = "#0b0a25".color) //dark blue
+
+
         ) {
-            Text(text = "Name", modifier = Modifier.width(100.dp))
-            TextField(
-                value = name,
-                onValueChange = { name = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = Color.Black
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(75.dp)
+                //.border(width=2.dp,color="#8bb2dd".color)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.White,
+                            Color.Transparent
+                        )
+                    )
                 )
-            )
-        }
+            ){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .background(color = "#181852".color),//blue
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "   Cancel   ", color = "#ff8c00".color, textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .clickable { notification.value = "Cancelled" }
+                            .padding(8.dp, 9.dp, 0.dp, 8.dp)
+                            .fillMaxHeight()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        "#181852".color,
+                                        "#0b0a25".color
+                                    )
+                                )
+                            )
+                            )
+                            //.background(color = "#ba160c".color)//orange red
+                    Text(text = "     Save     ", color = "#ff8c00".color,
+                        modifier = Modifier
+                            .clickable { notification.value = "Profile updated" }
+                            .padding(0.dp, 9.dp, 9.dp, 8.dp)
+                            .fillMaxHeight()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        "#181852".color,
+                                        "#0b0a25".color
+                                    )
+                                )
+                            ))
+                }
+            }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 4.dp, end = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Username", modifier = Modifier.width(100.dp))
-            TextField(
-                value = username,
-                onValueChange = { username = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = Color.Black
+            ProfileImage()
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 4.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Person, contentDescription = null,tint=Color.White)
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor= Color.White,
+                        focusedBorderColor = Green,
+                        unfocusedBorderColor = Yellow),
+                    value = username1.value,
+                    onValueChange = {
+                        username1.value = it
+                    },
+                    label = {
+                        Text("Name", color = Color.White)
+                    },
+                    placeholder = {
+                        Text("Enter Name",color= "#fffa06".color)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                        //.border(width= 2.dp,color="#fffa06".color)//yellow
                 )
-            )
-        }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 4.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Face, contentDescription = null,tint=Color.White)
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor= Color.White,
+                        focusedBorderColor = Green,
+                        unfocusedBorderColor = Yellow),
+                    value = Age1.value,
+                    onValueChange = {
+                        Age1.value = it
+                    },
+                    label = {
+                        Text("Age", color = Color.White)
+                    },
+                    placeholder = {
+                        Text("Enter Age (eg. 18)",color= "#fffa06".color)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    //.border(width= 2.dp,color="#fffa06".color)//yellow
+                )
+            }
+            /*Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 4.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Star, contentDescription = null,tint=Color.White)
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor= Color.White,
+                        focusedBorderColor = Green,
+                        unfocusedBorderColor = Yellow),
+                    value = Gender1.value,
+                    onValueChange = {
+                        Gender1.value = it
+                    },
+                    label = {
+                        Text("Gender", color = Color.White)
+                    },
+                    placeholder = {
+                        Text("Male/ Female/ Other",color= "#fffa06".color)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    //.border(width= 2.dp,color="#fffa06".color)//yellow
+                )
+            }*/
+            SimpleCheckboxComponent()
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            Text(
-                text = "Bio", modifier = Modifier
-                    .width(100.dp)
-                    .padding(top = 8.dp)
-            )
-            TextField(
-                value = bio,
-                onValueChange = { bio = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = Color.Black
-                ),
-                singleLine = false,
-                modifier = Modifier.height(150.dp)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 4.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Call, contentDescription = null,tint=Color.White)
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor= Color.White,
+                        focusedBorderColor = Green,
+                        unfocusedBorderColor = Yellow),
+                    value = Mob_No.value,
+                    onValueChange = {
+                        Mob_No.value = it
+                    },
+                    label = {
+                        Text("Mobile No.", color = Color.White)
+                    },
+                    placeholder = {
+                        Text("xxxxxxxxx",color= "#fffa06".color)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    //.border(width= 2.dp,color="#fffa06".color)//yellow
+                )
+            }
+
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 4.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Email, contentDescription = null,tint=Color.White)
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor= Color.White,
+                        focusedBorderColor = Green,
+                        unfocusedBorderColor = Yellow),
+                    value = E_mail.value,
+                    onValueChange = {
+                        E_mail.value = it
+                    },
+                    label = {
+                        Text("E-mail ID", color = Color.White)
+                    },
+                    placeholder = {
+                        Text("abc@gmail.com",color= "#fffa06".color)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    //.border(width= 2.dp,color="#fffa06".color)//yellow
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 4.dp)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Info, contentDescription = null,tint=Color.White)
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor= Color.White,
+                        focusedBorderColor = Green,
+                        unfocusedBorderColor = Yellow),
+                    value = About1.value,
+                    onValueChange = {
+                        About1.value = it
+                    },
+                    label = {
+                        Text("Adress/ Institute Name", color = Color.White, textAlign = TextAlign.Center)
+                    },
+                    placeholder = {
+                        Text("Enter your Address or Institute Name",color= "#fffa06".color)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    //.border(width= 2.dp,color="#fffa06".color)//yellow
+                )
+            }
         }
     }
 }
+
+
 
 @Composable
 fun ProfileImage() {
@@ -153,15 +346,31 @@ fun ProfileImage() {
 
     Column(
         modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
+            .padding(1.dp)
+            .fillMaxWidth()
+            .background(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        Color.White,
+                        Color.Transparent
+                    )
+                )
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
             shape = CircleShape,
             modifier = Modifier
-                .padding(8.dp)
+                .padding(20.dp)
                 .size(100.dp)
+                .background(
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            Color.White,
+                            Color.Transparent
+                        )
+                    )
+                )
         ) {
             Image(
                 painter = painter,
@@ -172,10 +381,12 @@ fun ProfileImage() {
                 contentScale = ContentScale.Crop
             )
         }
-        Text(text = "Change profile picture")
+        Text(text = "Change profile picture", textAlign = TextAlign.Center, color = "#ff8c00".color // orange
+        )
     }
 }
-
+val String.color
+    get() = Color(parseColor(this))
 
 
 @Preview(showBackground = true)
@@ -183,6 +394,33 @@ fun ProfileImage() {
 fun DefaultPreview() {
     JetpackComposeTheme() {
         ProfileScreen()
+    }
+}
+@Composable
+fun SimpleCheckboxComponent() {
+    val checkedState1 = remember { mutableStateOf(true) }
+    val checkedState2 = remember { mutableStateOf(true) }
+    val checkedState3 = remember { mutableStateOf(true) }
+    Row {
+            Checkbox(
+                checked = checkedState1.value,
+                modifier = Modifier.padding(5.dp),
+                onCheckedChange = { checkedState1.value = it },
+            )
+            Text(text = "Male", color = Color.White, modifier = Modifier.padding(2.dp))
+            Checkbox(
+                checked = checkedState2.value,
+                modifier = Modifier.padding(5.dp),
+                onCheckedChange = { checkedState2.value = it },
+            )
+            Text(text = "Female", color = Color.White, modifier = Modifier.padding(5.dp))
+            Checkbox(
+                checked = checkedState3.value,
+                modifier = Modifier.padding(5.dp),
+                onCheckedChange = { checkedState3.value = it },
+            )
+            Text(text = "Other", color = Color.White, modifier = Modifier.padding(5.dp))
+
     }
 }
 
