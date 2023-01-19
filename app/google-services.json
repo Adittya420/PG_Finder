@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "188279869544",
+    "project_id": "pgfinder-506b7",
+    "storage_bucket": "pgfinder-506b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188279869544:android:6bee3747a2504fa58b2bdd",
+        "android_client_info": {
+          "package_name": "com.example.jetpackcompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188279869544-9cder1tlb1elsrpv74fpjhu3a0k8kvua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCZ4CdxL-sNeNUWJaQdM66dvqvkw89-A0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188279869544-9cder1tlb1elsrpv74fpjhu3a0k8kvua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
