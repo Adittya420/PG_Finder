@@ -3,73 +3,80 @@ package com.breens.flowermeditationapp.ui.utils
 import androidx.compose.ui.graphics.Color
 import com.breens.flowermeditationapp.ui.theme.Black
 import com.breens.flowermeditationapp.ui.theme.Green
+import com.breens.flowermeditationapp.ui.theme.Grey
 import com.breens.flowermeditationapp.ui.theme.Yellow
 
 val FILTER_CONTENT_LIST = listOf(
-    FilterContent(Color.White, Black, "Mood swings"),
-    FilterContent(Black, Color.White, "Stress"),
-    FilterContent(Black, Color.White, "Depression"),
-    FilterContent(Black, Color.White, "Anxiety"),
-    FilterContent(Black, Color.White, "Anger"),
-    FilterContent(Black, Color.White, "Excitement"),
-    FilterContent(Black, Color.White, "Fear"),
-    FilterContent(Black, Color.White, "Joy"),
-    FilterContent(Black, Color.White, "Horror")
+    FilterContent(Black, Color.Gray, "            PG            "),
+    FilterContent(Black, Color.White, "          Hostel       "),
+    //FilterContent(Black, Color.White, "Depression"),
+    //FilterContent(Black, Color.White, "Anxiety"),
+    //FilterContent(Black, Color.White, "Anger"),
+    //FilterContent(Black, Color.White, "Excitement"),
+    //FilterContent(Black, Color.White, "Fear"),
+    //FilterContent(Black, Color.White, "Joy"),
+    //FilterContent(Black, Color.White, "Horror")
 )
 
 val MEDITATION_TYPE_LIST = listOf(
     MeditationType(
-        "45 mins",
-        "James Madchen",
-        "Love-kind meditation",
-        "During loving kindness meditation, you focus benevolent and loving energy toward yourself and others.",
+        "PG: 1",
+        "Show More",
+        "Kothawades PG",
+        "2.2km away from VJTI" +
+                "            Location: Wadala",
         Yellow,
         Black,
         Green
     ),
     MeditationType(
-        "34 mins",
-        "Kate Landon",
-        "Flower meditation",
-        "Outdoor concentration meditation, the object is a flower.",
+        "PG: 2",
+        "Show More",
+        "Thakares PG",
+        "5.6km away from VJTI   " +
+                "        Location: King Circle,Matunga",
         Green,
         Black,
         Yellow
     ),
     MeditationType(
-        "25 mins",
-        "David Wilson",
-        "Breather",
-        "A 5-minute intro to meditation, relax and inhale to start.",
-        Black,
-        Color.White,
-        Yellow
-    ),
-    MeditationType(
-        "45 mins",
-        "James Madchen",
-        "Love-kind meditation",
-        "During loving kindness meditation, you focus benevolent and loving energy toward yourself and others.",
+        "PG: 3",
+        "Show More",
+        "Chinmay PG",
+        "8km away from VJTI" +
+                "Location: PQR Street",
         Yellow,
         Black,
         Green
     ),
     MeditationType(
-        "34 mins",
-        "Kate Landon",
-        "Flower meditation",
-        "Outdoor concentration meditation, the object is a flower.",
+        "PG: 4",
+        "Show More",
+        "Aditya PG",
+        "5.3km away from VJTI" +
+                "Location: Behind ICT College",
         Green,
         Black,
         Yellow
     ),
     MeditationType(
-        "25 mins",
-        "David Wilson",
-        "Breather",
-        "A 5-minute intro to meditation, relax and inhale to start.",
+        "PG: 5",
+        "Show More",
+        "Arakhraos PG",
+        "1.3km away from VJTI" +
+                "Location: Naigoan",
+        Yellow,
         Black,
-        Color.White,
+        Green
+    ),
+    MeditationType(
+        "PG: 6",
+        "Show More",
+        "PQR PG",
+        "4.2km away from VJTI" +
+                "Location: Behind Don Bosko School",
+        Green,
+        Black,
         Yellow
     )
 )

@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -38,7 +40,7 @@ class MainActivity : ComponentActivity() {
             FlowerMeditationAppTheme {
                 Column(
                     modifier = Modifier
-                        .background(Grey)
+                        .background(Black)
                         .fillMaxSize()
                 ) {
                     HeaderProfileComponent()
@@ -61,7 +63,7 @@ class MainActivity : ComponentActivity() {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = painterResource(id = R.drawable.profilepicture),
+                    painter = painterResource(id = R.drawable.rohit_sharma),
                     contentDescription = "Profile picture",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -73,13 +75,15 @@ class MainActivity : ComponentActivity() {
                         text = "Welcome back",
                         fontFamily = nunitoLight,
                         fontSize = 14.sp,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
+                        color = Color.White
                     )
                     Text(
-                        text = "Miranda Smith",
+                        text = "Hitman Rohit",
                         fontFamily = nunitoMedium,
                         fontSize = 20.sp,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
+                        color = Color.White
                     )
                 }
             }
@@ -88,6 +92,7 @@ class MainActivity : ComponentActivity() {
                 Icon(
                     Icons.Default.Notifications,
                     contentDescription = "Notifications"
+
                 )
             }
         }
@@ -120,7 +125,9 @@ class MainActivity : ComponentActivity() {
                 focusedBorderColor = Color.LightGray,
                 unfocusedBorderColor = Color.White,
                 cursorColor = Color.LightGray,
-                trailingIconColor = Black
+                trailingIconColor = Black,
+                leadingIconColor = Gray,
+                placeholderColor = LightGray
             )
         )
     }
@@ -129,8 +136,8 @@ class MainActivity : ComponentActivity() {
     fun FilterOptionsComponent() {
         val filterOptions = FILTER_CONTENT_LIST
         LazyRow(
-            Modifier.padding(top = 15.dp, start = 15.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            Modifier.padding(top = 15.dp, start =15.dp),
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             items(filterOptions.size) {
                 ChipComponent(filter = filterOptions[it])
@@ -182,7 +189,7 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.padding(20.dp)
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
                     Chip(
                         onClick = { /*TODO*/ },
                         colors = ChipDefaults.chipColors(
