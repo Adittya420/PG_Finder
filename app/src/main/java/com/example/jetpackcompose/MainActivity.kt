@@ -1,5 +1,6 @@
 package com.example.jetpackcompose
 
+import android.content.Context
 import android.graphics.Color.parseColor
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -111,7 +113,7 @@ fun ProfileScreen() {
                         .background(color = "#181852".color),//blue
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "   Cancel   ", color = "#ff8c00".color, textAlign = TextAlign.Center,
+                    Text(text = "   Cancel   ", color = Color.White, textAlign = TextAlign.Center,
                         modifier = Modifier
                             .clickable { notification.value = "Cancelled" }
                             .padding(8.dp, 9.dp, 0.dp, 8.dp)
@@ -119,6 +121,7 @@ fun ProfileScreen() {
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
+                                        Color.Cyan,
                                         "#181852".color,
                                         "#0b0a25".color
                                     )
@@ -126,7 +129,7 @@ fun ProfileScreen() {
                             )
                             )
                             //.background(color = "#ba160c".color)//orange red
-                    Text(text = "     Save     ", color = "#ff8c00".color,
+                    Text(text = "     Save     ", color = Color.White,//"#ff8c00".color,
                         modifier = Modifier
                             .clickable { notification.value = "Profile updated" }
                             .padding(0.dp, 9.dp, 9.dp, 8.dp)
@@ -134,6 +137,7 @@ fun ProfileScreen() {
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
+                                        Color.Cyan,
                                         "#181852".color,
                                         "#0b0a25".color
                                     )
@@ -148,6 +152,15 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                "#0b0a25".color,
+                                "#181852".color,
+                                "#0b0a25".color
+                            )
+                        )
+                    )
                 ,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -178,6 +191,15 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                "#0b0a25".color,
+                                "#181852".color,
+                                "#0b0a25".color
+                            )
+                        )
+                    )
                 ,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -238,6 +260,15 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                "#0b0a25".color,
+                                "#181852".color,
+                                "#0b0a25".color
+                            )
+                        )
+                    )
                 ,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -269,6 +300,15 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                "#0b0a25".color,
+                                "#181852".color,
+                                "#0b0a25".color
+                            )
+                        )
+                    )
                 ,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -298,6 +338,15 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                "#0b0a25".color,
+                                "#181852".color,
+                                "#0b0a25".color
+                            )
+                        )
+                    )
                 ,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -361,7 +410,8 @@ fun ProfileImage() {
         Card(
             shape = CircleShape,
             modifier = Modifier
-                .padding(20.dp)
+                .border(3.dp,color=Color.Yellow,shape= CircleShape)
+                .padding(0.dp)
                 .size(100.dp)
                 .background(
                     brush = Brush.radialGradient(
@@ -376,13 +426,39 @@ fun ProfileImage() {
                 painter = painter,
                 contentDescription = null,
                 modifier = Modifier
+                    .fillMaxSize()
                     .wrapContentSize()
                     .clickable { launcher.launch("image/*") },
                 contentScale = ContentScale.Crop
             )
         }
-        Text(text = "Change profile picture", textAlign = TextAlign.Center, color = "#ff8c00".color // orange
-        )
+        GradientButton(text = "Change Profile Picture", textColor = Color.White, //"#ff8c00".color,
+            gradient = Brush.verticalGradient(
+                colors = listOf(
+                    Color.Cyan,
+                    "#00d3e0".color,
+                    "#00a9b3".color,
+                    "#00a9b3".color,
+                    "#43cea2".color,
+                    "#43cea2".color,
+                    "#185a9d".color,
+                    "#185a9d".color,
+                    "#0b0a25".color
+                )
+            ),
+        ) {
+
+        }
+        /*val context= LocalContext.current
+        Button(onClick = { Toast.makeText(context,"Click on the Icon to change the Profile Photo",Toast.LENGTH_LONG).show() },
+            modifier = Modifier.shadow(elevation = 15.dp, shape = RoundedCornerShape(15.dp)),
+            shape= RoundedCornerShape(size= 10.dp),
+
+                ) {
+            Text("Change Profile Picture",color= "#ff8c00".color)
+        }*/
+        //Text(text = "Change profile picture", textAlign = TextAlign.Center, color = "#ff8c00".color // orange
+
     }
 }
 val String.color
@@ -398,30 +474,43 @@ fun DefaultPreview() {
 }
 @Composable
 fun SimpleCheckboxComponent() {
-    val checkedState1 = remember { mutableStateOf(true) }
-    val checkedState2 = remember { mutableStateOf(true) }
-    val checkedState3 = remember { mutableStateOf(true) }
+    val checkedState1 = remember { mutableStateOf(false) }
+    val checkedState2 = remember { mutableStateOf(false) }
+    val checkedState3 = remember { mutableStateOf(false) }
     Row {
             Checkbox(
                 checked = checkedState1.value,
                 modifier = Modifier.padding(5.dp),
                 onCheckedChange = { checkedState1.value = it },
+                colors= CheckboxDefaults.colors(
+                    Color.Red,
+                    Color.Cyan
+                )
             )
-            Text(text = "Male", color = Color.White, modifier = Modifier.padding(2.dp))
+            Text(text = "Male", color = Color.White, modifier = Modifier.padding(2.dp,16.dp))
             Checkbox(
                 checked = checkedState2.value,
                 modifier = Modifier.padding(5.dp),
                 onCheckedChange = { checkedState2.value = it },
+                colors= CheckboxDefaults.colors(
+                    Color.Red,
+                    Color.Cyan
+                )
             )
-            Text(text = "Female", color = Color.White, modifier = Modifier.padding(5.dp))
+            Text(text = "Female", color = Color.White, modifier = Modifier.padding(2.dp,16.dp))
             Checkbox(
                 checked = checkedState3.value,
                 modifier = Modifier.padding(5.dp),
                 onCheckedChange = { checkedState3.value = it },
+                colors= CheckboxDefaults.colors(
+                    Color.Red,
+                    Color.Cyan
+                )
             )
-            Text(text = "Other", color = Color.White, modifier = Modifier.padding(5.dp))
+            Text(text = "Other", color = Color.White, modifier = Modifier.padding(2.dp,16.dp))
 
     }
 }
+
 
 
