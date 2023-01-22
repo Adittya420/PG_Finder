@@ -1,7 +1,9 @@
 package com.example.jetpackcompose
 
+import android.accounts.AuthenticatorDescription
 import android.content.Context
-import android.graphics.Color.parseColor
+import android.icu.text.CaseMap.Title
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
@@ -16,42 +18,44 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Green
-import androidx.compose.ui.graphics.Color.Companion.Yellow
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import com.example.jetpackcompose.ui.theme.JetpackComposeTheme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import androidx.compose.material.ButtonElevation as ButtonElevation1
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetpackComposeTheme() {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    ProfileScreen()
-                }
+            JetpackComposeTheme(darkTheme = false) {
+                ProfileScreen()
             }
         }
     }
 }
-
 @Composable
 fun ProfileScreen() {
     val username1 = remember {
@@ -82,14 +86,14 @@ fun ProfileScreen() {
 
     Box(
         modifier = Modifier
-            .background(color = "#0b0a25".color) //dark blue
+            .background(color = Color.White) //"#0b0a25".color) //dark blue
             .fillMaxHeight()
     ) {
 
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
-                .background(color = "#0b0a25".color) //dark blue
+                .background(color = Color.White)//"#0b0a25".color) //dark blue
 
 
         ) {
@@ -100,7 +104,7 @@ fun ProfileScreen() {
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            Color.White,
+                            Color.Black,
                             Color.Transparent
                         )
                     )
@@ -113,36 +117,7 @@ fun ProfileScreen() {
                         .background(color = "#181852".color),//blue
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "   Cancel   ", color = Color.White, textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .clickable { notification.value = "Cancelled" }
-                            .padding(8.dp, 9.dp, 0.dp, 8.dp)
-                            .fillMaxHeight()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color.Cyan,
-                                        "#181852".color,
-                                        "#0b0a25".color
-                                    )
-                                )
-                            )
-                            )
-                            //.background(color = "#ba160c".color)//orange red
-                    Text(text = "     Save     ", color = Color.White,//"#ff8c00".color,
-                        modifier = Modifier
-                            .clickable { notification.value = "Profile updated" }
-                            .padding(0.dp, 9.dp, 9.dp, 8.dp)
-                            .fillMaxHeight()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color.Cyan,
-                                        "#181852".color,
-                                        "#0b0a25".color
-                                    )
-                                )
-                            ))
+                    TopAppbarProfile(context = LocalContext.current.applicationContext)
                 }
             }
 
@@ -152,12 +127,13 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .shadow(5.dp, shape = RoundedCornerShape(5.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                "#0b0a25".color,
-                                "#181852".color,
-                                "#0b0a25".color
+                                Color.Transparent,
+                                "#e0ffff".color,
+                                Color.Transparent
                             )
                         )
                     )
@@ -167,36 +143,38 @@ fun ProfileScreen() {
                 OutlinedTextField(
 
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Person, contentDescription = null,tint=Color.White)
+                        Icon(imageVector = Icons.Default.Person, contentDescription = null,tint= Color.Black)
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        textColor= Color.White,
-                        focusedBorderColor = Green,
-                        unfocusedBorderColor = Yellow),
+                        textColor= Color.Black,
+                        focusedBorderColor = Color.Red,
+                        unfocusedBorderColor = "#185a9d".color
+                    ),
                     value = username1.value,
                     onValueChange = {
                         username1.value = it
                     },
                     label = {
-                        Text("Name", color = Color.White)
+                        Text("Name", color = Color.Black)
                     },
                     placeholder = {
-                        Text("Enter Name",color= "#fffa06".color)
+                        Text("Enter Name",color= "#185a9d".color )
                     },
                     modifier = Modifier.fillMaxWidth(),
-                        //.border(width= 2.dp,color="#fffa06".color)//yellow
+                    //.border(width= 2.dp,color="#fffa06".color)//yellow
                 )
             }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .shadow(5.dp, shape = RoundedCornerShape(5.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                "#0b0a25".color,
-                                "#181852".color,
-                                "#0b0a25".color
+                                Color.Transparent,
+                                "#e0ffff".color,
+                                Color.Transparent
                             )
                         )
                     )
@@ -205,21 +183,22 @@ fun ProfileScreen() {
             ) {
                 OutlinedTextField(
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Face, contentDescription = null,tint=Color.White)
+                        Icon(imageVector = Icons.Default.Face, contentDescription = null,tint= Color.Black)
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        textColor= Color.White,
-                        focusedBorderColor = Green,
-                        unfocusedBorderColor = Yellow),
+                        textColor= Color.Black,
+                        focusedBorderColor = Color.Red,
+                        unfocusedBorderColor = "#185a9d".color
+                    ),
                     value = Age1.value,
                     onValueChange = {
                         Age1.value = it
                     },
                     label = {
-                        Text("Age", color = Color.White)
+                        Text("Age", color = Color.Black)
                     },
                     placeholder = {
-                        Text("Enter Age (eg. 18)",color= "#fffa06".color)
+                        Text("Enter Age (eg. 18)",color= "#185a9d".color)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     //.border(width= 2.dp,color="#fffa06".color)//yellow
@@ -260,12 +239,13 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .shadow(5.dp, shape = RoundedCornerShape(5.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                "#0b0a25".color,
-                                "#181852".color,
-                                "#0b0a25".color
+                                Color.Transparent,
+                                "#e0ffff".color,
+                                Color.Transparent
                             )
                         )
                     )
@@ -274,21 +254,22 @@ fun ProfileScreen() {
             ) {
                 OutlinedTextField(
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Call, contentDescription = null,tint=Color.White)
+                        Icon(imageVector = Icons.Default.Call, contentDescription = null,tint= Color.Black)
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        textColor= Color.White,
-                        focusedBorderColor = Green,
-                        unfocusedBorderColor = Yellow),
+                        textColor= Color.Black,
+                        focusedBorderColor = Color.Red,
+                        unfocusedBorderColor = "#185a9d".color
+                    ),
                     value = Mob_No.value,
                     onValueChange = {
                         Mob_No.value = it
                     },
                     label = {
-                        Text("Mobile No.", color = Color.White)
+                        Text("Mobile No.", color = Color.Black)
                     },
                     placeholder = {
-                        Text("xxxxxxxxx",color= "#fffa06".color)
+                        Text("xxxxxxxxx",color= "#185a9d".color)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     //.border(width= 2.dp,color="#fffa06".color)//yellow
@@ -300,12 +281,13 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .shadow(5.dp, shape = RoundedCornerShape(5.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                "#0b0a25".color,
-                                "#181852".color,
-                                "#0b0a25".color
+                                Color.Transparent,
+                                "#e0ffff".color,
+                                Color.Transparent
                             )
                         )
                     )
@@ -314,21 +296,22 @@ fun ProfileScreen() {
             ) {
                 OutlinedTextField(
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = null,tint=Color.White)
+                        Icon(imageVector = Icons.Default.Email, contentDescription = null,tint= Color.Black)
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        textColor= Color.White,
-                        focusedBorderColor = Green,
-                        unfocusedBorderColor = Yellow),
+                        textColor= Color.Black,
+                        focusedBorderColor = Color.Red,
+                        unfocusedBorderColor = "#185a9d".color
+                    ),
                     value = E_mail.value,
                     onValueChange = {
                         E_mail.value = it
                     },
                     label = {
-                        Text("E-mail ID", color = Color.White)
+                        Text("E-mail ID", color = Color.Black)
                     },
                     placeholder = {
-                        Text("abc@gmail.com",color= "#fffa06".color)
+                        Text("abc@gmail.com",color= "#185a9d".color)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     //.border(width= 2.dp,color="#fffa06".color)//yellow
@@ -338,12 +321,13 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 4.dp)
+                    .shadow(5.dp, shape = RoundedCornerShape(5.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                "#0b0a25".color,
-                                "#181852".color,
-                                "#0b0a25".color
+                                Color.Transparent,
+                                "#e0ffff".color,
+                                Color.Transparent
                             )
                         )
                     )
@@ -352,25 +336,48 @@ fun ProfileScreen() {
             ) {
                 OutlinedTextField(
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Info, contentDescription = null,tint=Color.White)
+                        Icon(imageVector = Icons.Default.Info, contentDescription = null,tint= Color.Black)
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        textColor= Color.White,
-                        focusedBorderColor = Green,
-                        unfocusedBorderColor = Yellow),
+                        textColor= Color.Black,
+                        focusedBorderColor = Color.Red,
+                        unfocusedBorderColor = "#185a9d".color
+                    ),
                     value = About1.value,
                     onValueChange = {
                         About1.value = it
                     },
                     label = {
-                        Text("Adress/ Institute Name", color = Color.White, textAlign = TextAlign.Center)
+                        Text("Adress/ Institute Name", color = Color.Black, textAlign = TextAlign.Center)
                     },
                     placeholder = {
-                        Text("Enter your Address or Institute Name",color= "#fffa06".color)
+                        Text("Enter your Address or Institute Name",color= "#185a9d".color)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     //.border(width= 2.dp,color="#fffa06".color)//yellow
                 )
+            }
+            Row(
+                modifier= Modifier.padding(145.dp,10.dp)
+            ) {
+                GradientButton(text = "Save", textColor = Color.White, //"#ff8c00".color,
+                    gradient = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Cyan,
+                            "#00d3e0".color,
+                            "#00a9b3".color,
+                            "#00a9b3".color,
+                            "#43cea2".color,
+                            "#43cea2".color,
+                            "#185a9d".color,
+                            "#185a9d".color,
+                            "#0b0a25".color,
+                            "#0b0a25".color
+                        )
+                    ),
+                ) {
+
+                }
             }
         }
     }
@@ -400,7 +407,7 @@ fun ProfileImage() {
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        Color.White,
+                        Color.Black,
                         Color.Transparent
                     )
                 )
@@ -410,12 +417,13 @@ fun ProfileImage() {
         Card(
             shape = CircleShape,
             modifier = Modifier
-                .border(3.dp,color=Color.Yellow,shape= CircleShape)
+                .border(3.dp, color = "#185a9d".color, shape = CircleShape)
                 .padding(0.dp)
                 .size(100.dp)
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
+                            Color.Black,
                             Color.White,
                             Color.Transparent
                         )
@@ -443,6 +451,7 @@ fun ProfileImage() {
                     "#43cea2".color,
                     "#185a9d".color,
                     "#185a9d".color,
+                    "#0b0a25".color,
                     "#0b0a25".color
                 )
             ),
@@ -462,7 +471,7 @@ fun ProfileImage() {
     }
 }
 val String.color
-    get() = Color(parseColor(this))
+    get() = Color(android.graphics.Color.parseColor(this))
 
 
 @Preview(showBackground = true)
@@ -478,39 +487,61 @@ fun SimpleCheckboxComponent() {
     val checkedState2 = remember { mutableStateOf(false) }
     val checkedState3 = remember { mutableStateOf(false) }
     Row {
-            Checkbox(
-                checked = checkedState1.value,
-                modifier = Modifier.padding(5.dp),
-                onCheckedChange = { checkedState1.value = it },
-                colors= CheckboxDefaults.colors(
-                    Color.Red,
-                    Color.Cyan
-                )
+        Checkbox(
+            checked = checkedState1.value,
+            modifier = Modifier.padding(5.dp),
+            onCheckedChange = { checkedState1.value = it },
+            colors= CheckboxDefaults.colors(
+                "#185a9d".color,
+                Color.Black
             )
-            Text(text = "Male", color = Color.White, modifier = Modifier.padding(2.dp,16.dp))
-            Checkbox(
-                checked = checkedState2.value,
-                modifier = Modifier.padding(5.dp),
-                onCheckedChange = { checkedState2.value = it },
-                colors= CheckboxDefaults.colors(
-                    Color.Red,
-                    Color.Cyan
-                )
+        )
+        Text(text = "Male", color = Color.Black, modifier = Modifier.padding(2.dp,16.dp))
+        Checkbox(
+            checked = checkedState2.value,
+            modifier = Modifier.padding(5.dp),
+            onCheckedChange = { checkedState2.value = it },
+            colors= CheckboxDefaults.colors(
+                "#185a9d".color,
+                Color.Black
             )
-            Text(text = "Female", color = Color.White, modifier = Modifier.padding(2.dp,16.dp))
-            Checkbox(
-                checked = checkedState3.value,
-                modifier = Modifier.padding(5.dp),
-                onCheckedChange = { checkedState3.value = it },
-                colors= CheckboxDefaults.colors(
-                    Color.Red,
-                    Color.Cyan
-                )
+        )
+        Text(text = "Female", color = Color.Black, modifier = Modifier.padding(2.dp,16.dp))
+        Checkbox(
+            checked = checkedState3.value,
+            modifier = Modifier.padding(5.dp),
+            onCheckedChange = { checkedState3.value = it },
+            colors= CheckboxDefaults.colors(
+                "#185a9d".color,
+                Color.Black
             )
-            Text(text = "Other", color = Color.White, modifier = Modifier.padding(2.dp,16.dp))
+        )
+        Text(text = "Other", color = Color.Black, modifier = Modifier.padding(2.dp,16.dp))
 
     }
 }
-
-
+@Composable
+fun TopAppbarProfile(context: Context) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Profile",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        backgroundColor = MaterialTheme.colors.background,
+        elevation = 4.dp,
+        navigationIcon = {
+            IconButton(onClick = {
+                Toast.makeText(context, "Nav Button", Toast.LENGTH_SHORT).show()
+            }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Go back",
+                )
+            }
+        }
+    )
+}
 
