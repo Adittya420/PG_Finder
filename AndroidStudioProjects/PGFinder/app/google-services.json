@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "731429202852",
+    "firebase_url": "https://pg-finder-99132-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pg-finder-99132",
+    "storage_bucket": "pg-finder-99132.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731429202852:android:9aa81e6482f1d87d652f31",
+        "android_client_info": {
+          "package_name": "com.example.pgfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731429202852-u80a0uu54hdm7ioprh5igo4bj427svei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pgfinder",
+            "certificate_hash": "5759bffbc4ebf3164123ea4fba999a1c9ad9a362"
+          }
+        },
+        {
+          "client_id": "731429202852-ljvpkomcvpje0rg876da9kgtujgnj775.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiAEddssZEdQBHSqd0QPa6XBtFb2iFMNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731429202852-ljvpkomcvpje0rg876da9kgtujgnj775.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

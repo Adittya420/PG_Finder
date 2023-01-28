@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PG Finder</string>
+    <string name="title_activity_registration">Registration</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_empty_home">EmptyActivity_home</string>
+    <string name="title_activity_view_profile">ViewProfile</string>
+    <string name="title_activity_edit_profile">EditProfile</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+</resources>
