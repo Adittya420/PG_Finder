@@ -19,11 +19,14 @@ fun HomeNavGraph(navController: NavHostController) {
            ProfileCardUI(
                onViewButtonClick = {
                    navController.navigate(SettingNav.ViewProf.route)
+               } ,
+               OnCustumisationClick = {
+                   navController.navigate(SettingNav.EditProf.route)
                }
            )
         }
 //        composable(route = SettingNav.EditProf.route) {
-//            EditProfileScreen()
+//            EditProfileScreen(AutherViewModel())
 //
 //        }
 //        composable(route = SettingNav.ViewProf.route) {

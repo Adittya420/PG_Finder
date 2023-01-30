@@ -69,9 +69,12 @@ fun HeaderText() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileCardUI(
-    onViewButtonClick: () -> Unit
-) {
+    onViewButtonClick: () -> Unit,
+    OnCustumisationClick: () -> Unit
+
+    ) {
     auth = Firebase.auth
+    val user = auth.currentUser
     Column(
         modifier = androidx.compose.ui.Modifier
             .background(Grey)
@@ -104,6 +107,7 @@ fun ProfileCardUI(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column() {
+                    val user = auth.currentUser
                     Text(
                         text = "Check Your Profile",
                         fontFamily = Poppins,
@@ -112,13 +116,15 @@ fun ProfileCardUI(
                         fontWeight = FontWeight.Bold,
                     )
 
-                    Text(
-                        text = Email.toString(),
-                        fontFamily = Poppins,
-                        color = Gray,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
+                    if (user != null) {
+                        Text(
+                            text = user.email.toString(),
+                            fontFamily = Poppins,
+                            color = Gray,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
 
                     Button(
                         modifier = androidx.compose.ui.Modifier.padding(top = 10.dp),
@@ -175,11 +181,74 @@ fun ProfileCardUI(
                 icon = R.drawable.ic_more,
                 mainText = "More customization",
                 subText = "Customize it more to fit your usage",
-                onClick = {}
+                onClick = {
+                    OnCustumisationClick()
+                }
             )
 //        GeneralSettingItem()
         }
+        Column(
+            modifier = androidx.compose.ui.Modifier
+                .padding(horizontal = 14.dp)
+                .padding(top = 10.dp)
+        ) {
+            Text(
+                text = "Support",
+                fontFamily = Poppins,
+                color = SecondaryColor,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = androidx.compose.ui.Modifier
+                    .padding(vertical = 8.dp)
+            )
+            SupportItem(
+                icon = R.drawable.ic_whatsapp,
+                mainText = "Contact",
+                onClick = {}
+            )
+            SupportItem(
+                icon = R.drawable.ic_feedback,
+                mainText = "Feedback",
+                onClick = {}
+            )
+            SupportItem(
+                icon = R.drawable.ic_privacy_policy,
+                mainText = "Privacy Policy",
+                onClick = {}
+            )
+            SupportItem(
+                icon = R.drawable.ic_about,
+                mainText = "About",
+                onClick = {}
+            )
+        }
+        Button(
+            modifier = androidx.compose.ui.Modifier.padding(top = 10.dp),
+            onClick = {
+//                onViewButtonClick()
+                      auth.signOut()
+
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = PrimaryColor
+            ),
+            contentPadding = PaddingValues(horizontal = 30.dp),
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 2.dp
+            ),
+            shape = Shapes1.medium
+        ) {
+            Text(
+                text = "SignOut",
+                fontFamily = Poppins,
+                color = SecondaryColor,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
+
 }
 
     @ExperimentalMaterialApi
@@ -212,6 +281,41 @@ fun ProfileCardUI(
                 onClick = {}
             )
 //        GeneralSettingItem()
+            Column(
+                modifier = androidx.compose.ui.Modifier
+                    .padding(horizontal = 14.dp)
+                    .padding(top = 10.dp)
+            ) {
+                Text(
+                    text = "Support",
+                    fontFamily = Poppins,
+                    color = SecondaryColor,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = androidx.compose.ui.Modifier
+                        .padding(vertical = 8.dp)
+                )
+                SupportItem(
+                    icon = R.drawable.ic_whatsapp,
+                    mainText = "Contact",
+                    onClick = {}
+                )
+                SupportItem(
+                    icon = R.drawable.ic_feedback,
+                    mainText = "Feedback",
+                    onClick = {}
+                )
+                SupportItem(
+                    icon = R.drawable.ic_privacy_policy,
+                    mainText = "Privacy Policy",
+                    onClick = {}
+                )
+                SupportItem(
+                    icon = R.drawable.ic_about,
+                    mainText = "About",
+                    onClick = {}
+                )
+            }
         }
     }
 

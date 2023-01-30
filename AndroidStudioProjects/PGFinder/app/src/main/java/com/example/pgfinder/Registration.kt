@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,9 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.pgfinder.ui.theme.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.childEvents
 import com.google.firebase.ktx.Firebase
 
 
@@ -35,15 +40,20 @@ class Registration : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PGFinderTheme {
-                RegisterScreen()
+//                RegisterScreen(Auther() ?
+                }
+
             }
         }
     }
-}
+
     private lateinit var auth: FirebaseAuth
     @Composable
-    fun RegisterScreen() {
+    fun RegisterScreen(auther: Auther ,
+    onAlreadyClick :()->Unit, onClick :()->Unit) {
         auth=Firebase.auth
+        val db = FirebaseDatabase.getInstance().getReference("Users")
+
         var username by remember { mutableStateOf("") }
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
@@ -271,28 +281,40 @@ class Registration : ComponentActivity() {
 
             Button(
                 onClick = {
-                    if(!email.isEmpty()|| !password.isEmpty()){
+//                   auther.id = db.setValue(username).addOnCompleteListener {
+//                       if (it.isSuccessful){
+//                           Toast.makeText(Context, "USernameAdded", Toast.LENGTH_LONG)
+//                               .show()
+//                       }else{
+//                           Toast.makeText(Context, "Failed", Toast.LENGTH_LONG)
+//                               .show()
+//                       }
+//                   }.toString()
+                    if(!email.isEmpty()|| !password.isEmpty()||!username.isEmpty()){
                         auth.createUserWithEmailAndPassword(email.trim(), password.trim()).addOnCompleteListener {task->
                             run {
                                 if (task.isSuccessful) {
+                                    onClick()
+                                    auther.username = dbAuther.setValue(username).toString()
                                     Toast.makeText(Context, "Success", Toast.LENGTH_LONG)
                                         .show()
                                 } else {
-                                    val e = task.getException()
-                                    Log.e("Registration", "Failed Registration", e);
+//                                    val e = task.getException()
+//                                    Log.e("Registration", "Failed Registration", e);
                                     Toast.makeText(
                                         Context,
-                                        "Try Again ${email.toString().trim()} ",
+                                        "Email Already Exist",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    print("Hello Aditya")
+//                                    print("Hello Aditya")
                                 }
                             }
 
                         }
                     }else{
-                        Toast.makeText(Context,"All fields are required $email $password",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(Context,"All fields are required ",Toast.LENGTH_SHORT).show()
                     }
+
 
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -318,7 +340,7 @@ class Registration : ComponentActivity() {
                 )
             }
             TextButton(onClick = {
-
+                                 onAlreadyClick()
             },
                 modifier = Modifier
                     .fillMaxWidth()

@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,18 +19,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.pgfinder.sealed.DataState
-import com.example.pgfinder.ui.theme.PGFinderTheme
-import com.example.pgfinder.ui.theme.Poppins
-import com.example.pgfinder.ui.theme.PrimaryColor
+import com.example.pgfinder.ui.theme.*
 
 class ProfileActivity : ComponentActivity() {
     lateinit var viewModel: AutherViewModel
@@ -47,77 +48,165 @@ class ProfileActivity : ComponentActivity() {
 @Composable
 fun viewProf(
     viewModel: AutherViewModel,
-    onClick: () -> Unit,
+//    onClick: () -> Unit,
 ){
-    when(val results = viewModel.response.value){
-        is DataState.Loading ->{
-            Box(modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-
-            }
-        }
-        is DataState.Success ->{
-           showLazyList(results.data)
-        }
-        is DataState.Failure ->{
-            Box(modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center) {
-                Text(text = results.message,
-                fontSize = 15.sp)
-
-            }
-        }
-        else ->{
-            Box(modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center) {
-                Text(text = "Error! Loading Data",
-                    fontSize = 15.sp)
-
-            }
-        }
-        
-
-    }
-    Button(
-        onClick = {
-            onClick()
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .padding(top = 20.dp),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = PrimaryColor,
-            contentColor = Color.White
-        ),
-        contentPadding = PaddingValues(vertical = 14.dp)
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ) {
 
-        Text(text = "m", fontFamily = Poppins)
+
+        when (val results = viewModel.response.value) {
+            is DataState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+
+                }
+            }
+            is DataState.Success -> {
+                showLazyList(results.data)
+            }
+            is DataState.Failure -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = results.message,
+                        fontSize = 15.sp
+                    )
+
+                }
+            }
+            else -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Error! Loading Data",
+                        fontSize = 15.sp
+                    )
+
+                }
+            }
+
+
+        }
+        Button(
+            onClick = {
+//            onClick()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(top = 20.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = PrimaryColor,
+                contentColor = Color.White
+            ),
+            contentPadding = PaddingValues(vertical = 14.dp)
+        ) {
+
+            Text(text = "Exit", fontFamily = Poppins)
+        }
     }
 }
 @Composable
 fun showLazyList(Authers : MutableList<Auther>) {
     LazyColumn{
-        items(Authers){
-             Auther1 -> {
-               cardItem(Auther1)
-        }
-        }
+
+            items(Authers){
+                    Auther1 ->
+                run {
+                    cardItem(Auther1)
+                }
+            }
+
 
     }
 }
 @Composable
- fun cardItem(Auther: Auther){
-     Card(modifier = Modifier
-         .fillMaxWidth()
-         .height(150.dp)
-         .padding(10.dp)) {
-         Box(modifier = Modifier.fillMaxWidth()) {
-             Text(text = Auther.name1!!)
-         }
-     }
+ fun cardItem(Auther1: Auther){
+    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(Grey)
+//            .padding(5.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
+
+        Surface(
+            shape = BottomBoxShape.large,
+            color = Color(0xFFDAE1E7),
+            modifier = Modifier
+                .height(170.dp)
+                .padding(10.dp)
+//                    .shadow(10.dp),
+            //shadowElevation = 10.dp
+        ) {
+            Icon(painter = painterResource(id = R.drawable.profile_pic), contentDescription = "Profile Pic",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),)
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .padding(10.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = Auther1.name1!!)
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .padding(10.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = Auther1.age!!)
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp)
+                    .padding(10.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = Auther1.mobNumber!!)
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(450.dp)
+                    .padding(10.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = Auther1.institute!!)
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(550.dp)
+                    .padding(10.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    if (user != null) {
+                        Text(text = user.email.toString())
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -144,7 +233,7 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
                         Icon(Icons.Filled.ArrowBack, "backIcon")
                     }
                 },
-                backgroundColor = Color.White,
+                backgroundColor = Grey,
                 contentColor = PrimaryColor,
 
                 )

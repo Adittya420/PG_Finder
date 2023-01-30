@@ -26,8 +26,14 @@ fun BottomNavGraph(navController: NavHostController) {
             ProfileCardUI(
                 onViewButtonClick = {
                     navController.navigate(Graph.Setings)
+                },
+                OnCustumisationClick = {
+                    navController.navigate(Graph.editp)
                 }
+
             )
+
+
 //        }
 //        composable(route = SettingNav.ViewProf.route){
 //            viewProf(
@@ -42,7 +48,11 @@ fun BottomNavGraph(navController: NavHostController) {
 //        }
 //
         }
+        composable(route = BottomBarScreen.Create.route){
+            MyCreates()
+        }
         detailsNavGraph(navController = navController)
+
     }
 }
 
@@ -54,13 +64,21 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
         composable(route = SettingNav.ViewProf.route) {
             viewProf (
                 AutherViewModel(),
-                onClick = {
-                    navController.navigate(SettingNav.EditProf.route)
-                }
+//                onClick = {
+//                    navController.navigate(SettingNav.EditProf.route)
+//                }
             )
 
         }
-        composable(route = SettingNav.EditProf.route) {
+//        composable(route = SettingNav.EditProf.route) {
+//            EditProfileScreen(AutherViewModel())
+//        }
+    }
+    navigation(
+        route = Graph.editp,
+        startDestination = SettingNav.EditProf.route
+    ){
+        composable(route = SettingNav.EditProf.route){
             EditProfileScreen(AutherViewModel())
         }
     }

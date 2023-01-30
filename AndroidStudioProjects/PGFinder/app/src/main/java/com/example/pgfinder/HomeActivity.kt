@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pgfinder.ui.theme.PGFinderTheme
 import com.example.pgfinder.ui.theme.Poppins
 import com.example.pgfinder.ui.theme.PrimaryColor
-
+var Email : String = ""
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

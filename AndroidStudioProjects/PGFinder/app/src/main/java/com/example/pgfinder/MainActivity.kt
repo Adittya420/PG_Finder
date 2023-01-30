@@ -1,11 +1,13 @@
 package com.example.pgfinder
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,14 +34,30 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-var Email : String = ""
 
 class MainActivity : ComponentActivity() {
+//    lateinit var auth: FirebaseAuth
+    override fun onStart() {
+        auth = Firebase.auth
+        super.onStart()
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            var intent = Intent(this , HomeActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+//    @Composable
+//override fun onStart() {
+//    super.onStart()
+//    val currentUser = auth.currentUser
+//    if(currentUser!=null){
+//        MainScreen(navController = rememberNavController())
+//    }
+//}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContent {
             PGFinderTheme {
@@ -46,6 +65,7 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+
     }
 
 }
@@ -54,7 +74,10 @@ private lateinit var auth: FirebaseAuth
     fun LoginScreen(
         onLoginClick: () -> Unit,
 //        onLoginClick: () -> Unit,
-        onSignupClick: () -> Unit
+        onSignupClick: () -> Unit,
+
+        onForgotclick:() ->Unit
+
     ) {
         auth = Firebase.auth
         var email by remember { mutableStateOf("") }
@@ -270,7 +293,9 @@ private lateinit var auth: FirebaseAuth
 
 
                         TextButton(
-                            onClick = {},
+                            onClick = {
+                                      onForgotclick()
+                            },
                             contentPadding = PaddingValues(vertical = 0.dp)
                         ) {
                             Text(
@@ -301,6 +326,148 @@ private lateinit var auth: FirebaseAuth
             }
         }
     }
+
+
+@Composable
+fun ForgotPasswordScreen(
+    onRememberClick:()->Unit
+) {
+    var email by remember { mutableStateOf("") }
+    Column (
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Text(
+            text = "FORGOT YOUR PASSWORD?",
+            fontFamily = Poppins,
+            color = SecondaryColor,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 80.dp),
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 16.sp
+        )
+        Image(
+            painter = painterResource(id = R.drawable.ic_forgot_password_illustration),
+            contentDescription = "",
+            modifier = Modifier.size(240.dp)
+        )
+        Card(
+            backgroundColor = Color.White,
+            elevation = 0.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+
+            Column(
+                modifier = Modifier.padding(vertical = 20.dp)
+            ) {
+                Text(
+                    text = "Enter your registered email below to receive password reset instruction",
+                    fontFamily = Poppins,
+                    color = SecondaryColor,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 12.sp
+                )
+                TextField(
+                    value = email, onValueChange = { email = it },
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 20.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = PrimaryColor,
+                        backgroundColor = BackgroundColor,
+                        cursorColor = PrimaryColor,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    shape = InputBoxShape.medium,
+                    singleLine = true,
+                    leadingIcon = {
+                        Row(
+                            modifier = Modifier.padding(start = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_email_outline),
+                                contentDescription = "",
+                                tint = PrimaryColor,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(
+                                modifier = Modifier
+                                    .width(6.dp)
+                            )
+                            Spacer(
+                                modifier = Modifier
+                                    .width(1.dp)
+                                    .height(24.dp)
+                                    .background(PrimaryColor)
+                            )
+                        }
+                    },
+                    placeholder = {
+                        Text(text = "Email Address", color = Color.Gray)
+                    },
+                    textStyle = TextStyle(
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = Poppins
+                    )
+                )
+
+
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = PrimaryColor
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 20.dp),
+                    contentPadding = PaddingValues(vertical = 14.dp),
+                    elevation = ButtonDefaults.elevation(
+                        defaultElevation = 0.dp,
+                        pressedElevation = 2.dp
+                    ),
+                    shape = Shapes.medium
+                ) {
+                    Text(
+                        text = "Send Reset Link",
+                        fontFamily = Poppins,
+                        color = SecondaryColor,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+
+            }
+
+        }
+        TextButton(onClick = { /*TODO*/
+                             onRememberClick()},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp)
+        ) {
+            Text(text = "Remember password? Login",
+                fontFamily = Poppins,
+                color= SecondaryColor,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+    }
+}
 
 
 

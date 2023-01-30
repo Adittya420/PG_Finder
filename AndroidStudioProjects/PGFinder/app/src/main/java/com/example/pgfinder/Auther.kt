@@ -4,7 +4,7 @@ import com.google.firebase.database.Exclude
 
 
  data class Auther(
-    @get:Exclude
+    var username: String? = null,
     var id:String? = null,
     var name1 :String? = null,
     var age:String? = null,
