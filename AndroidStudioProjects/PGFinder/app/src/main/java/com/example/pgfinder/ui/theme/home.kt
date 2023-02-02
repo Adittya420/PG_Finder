@@ -1,35 +1,35 @@
 package com.example.pgfinder.ui.theme
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.widget.Toast
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +38,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.pgfinder.*
 import com.example.pgfinder.R
 import com.example.pgfinder.sealed.DataStatepg
@@ -45,9 +48,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 
-
+var PGid:Int? = null
 @Composable
-fun home() {
+fun home(
+    onReadClick:()->Unit,
+//    onLogoutClick:()->Unit
+) {
     Column(
         modifier = Modifier
             .background(PlaceholderColor)
@@ -56,15 +62,16 @@ fun home() {
 //        FloatingActionButton(onClick = {}) {
 //
 //        }
-        HeaderProfileComponent(AutherViewModel())
+        HeaderProfileComponent(AutherViewModel() )
         SearchInputComponent()
-        setData(PGviewModel())
+        setData(PGviewModel()  , onReadClick)
 //        FilterOptionsComponent()
 //        MeditationTypesComponent()
     }
 }
+
 @Composable
-fun setData(viewModel: PGviewModel) {
+fun setData(viewModel: PGviewModel , onReadClick: () -> Unit) {
     when (val results = viewModel.pgresponse.value) {
         is DataStatepg.Loading -> {
             Box(
@@ -77,7 +84,7 @@ fun setData(viewModel: PGviewModel) {
             }
         }
         is DataStatepg.Success -> {
-            showLazyList2(results.data)
+            showLazyList2(results.data , onReadClick)
         }
         is DataStatepg.Failure -> {
             Box(
@@ -107,15 +114,16 @@ fun setData(viewModel: PGviewModel) {
     }
 }
 @Composable
-fun showLazyList2(data: MutableList<PGdata>) {
+fun showLazyList2(data: MutableList<PGdata> , onReadClick: () -> Unit) {
     LazyColumn(
-        Modifier.padding(),
+        Modifier.padding(bottom = 55.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ){
         items(data){
                 eachpg ->
             run {
-                cardItem1(eachpg)
+//                if(eachpg.Location == query)
+                cardItem1(eachpg , onReadClick)
             }
         }
 
@@ -123,8 +131,11 @@ fun showLazyList2(data: MutableList<PGdata>) {
 
 }
 @Composable
-fun cardItem1(eachpg: PGdata) {
-        Column( ) {
+fun cardItem1(eachpg: PGdata  , onReadClick: () -> Unit) {
+        Column(
+
+        ) {
+            var context = LocalContext.current
             Surface(
                 shape = RoundedCornerShape(10.dp),
                 color = Color(0xFFDAE1E7),
@@ -144,19 +155,7 @@ fun cardItem1(eachpg: PGdata) {
                             .weight(2f),
                         verticalArrangement = Arrangement.Center
                     ) {
-//                Surface(
-//                    shape = RoundedCornerShape(24.dp),
-//                    modifier = Modifier.wrapContentSize(),
-//                    color = Color(0xFFD1D5E1)
-//                ) {
-//                    Text(
-//                        text = "New release",
-//                        fontSize =  12.sp,
-//                        style = MaterialTheme.typography.overline,
-//                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
-//                    )
-//                }
-
+//
                         Spacer(modifier = Modifier.height(1.dp))
 
                         Text(
@@ -181,12 +180,14 @@ fun cardItem1(eachpg: PGdata) {
                                 color = Black
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            for (i in 1..eachpg.vacancy!!) {
-                                Icon(
-                                    imageVector = Icons.Default.Person,
-                                    contentDescription = "",
-                                    tint = SecondaryColor
-                                )
+                            if (eachpg.vacancy != "") {
+                                for (i in 1..eachpg.vacancy!!.toInt()) {
+                                    Icon(
+                                        imageVector = Icons.Default.Person,
+                                        contentDescription = "",
+                                        tint = SecondaryColor
+                                    )
+                                }
                             }
 
 //                            Icon(
@@ -217,7 +218,10 @@ fun cardItem1(eachpg: PGdata) {
                                 //containerColor = Color.White
                                 backgroundColor = PrimaryColor
                             ),
-                            onClick = {  }
+                            onClick = {
+                                onReadClick()
+
+                            }
                         ) {
                             Text(
                                 text = "Read More",
@@ -233,7 +237,7 @@ fun cardItem1(eachpg: PGdata) {
                         modifier = Modifier.size(width = 100.dp, height = 150.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.pgimage),
+                            painter = painterResource(id = R.drawable.hostelimage),
                             contentScale = ContentScale.Crop,
                             contentDescription = null
                         )
@@ -242,6 +246,9 @@ fun cardItem1(eachpg: PGdata) {
             }
         }
     }
+
+
+
 //
 //    Card(
 //        shape = RoundedCornerShape(50.dp),
@@ -283,9 +290,9 @@ fun cardItem1(eachpg: PGdata) {
 //
 //    }
 val auth = Firebase.auth
-val user = auth.currentUser
+var user = auth.currentUser
 @Composable
-fun HeaderProfileComponent(autherViewModel: AutherViewModel) {
+fun HeaderProfileComponent(autherViewModel: AutherViewModel ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -314,7 +321,7 @@ fun HeaderProfileComponent(autherViewModel: AutherViewModel) {
                 )
                 if (user != null) {
                     Text(
-                        text = user.email.toString(),
+                        text = user!!.email.toString(),
                         fontFamily = nunitoMedium,
                         fontSize = 20.sp,
                         textAlign = TextAlign.Start,
@@ -325,34 +332,59 @@ fun HeaderProfileComponent(autherViewModel: AutherViewModel) {
         }
 
         BadgedBox(badge = { Badge(backgroundColor = Green) }) {
-            Icon(
-                Icons.Default.Notifications,
-                contentDescription = "Notifications",
-                tint = SecondaryColor
-            )
+            IconButton(onClick = {
+            /*TODO*/
+                auth.signOut()
+//                onLogoutClick()
+            }) {
+                Icon(
+                    Icons.Default.ExitToApp,
+                    contentDescription = "Notifications",
+                    tint = SecondaryColor
+                )
+            }
         }
 
     }
 }
 
-@Preview
+//@Preview
 @Composable
 fun SearchInputComponent() {
+
+    var list = mutableListOf<PGdata>()
+//    for(i in templist){
+//        list.add(i)
+//    }
+    var query : MutableState<String> = remember { mutableStateOf("") }
+
+    val contexto = LocalContext.current
+    var search by remember { mutableStateOf("") }
     OutlinedTextField(
-        value = "", onValueChange = {},
+        value = query.value, onValueChange = {
+                    query.value = it
+        },
         placeholder = { Text(text = "Search", fontFamily = nunitoLight) },
         leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search Icon"
-            )
+            IconButton(onClick = {
+                Toast.makeText(contexto , "$query" , Toast.LENGTH_SHORT).show()
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search Icon"
+                )
+            }
         },
         trailingIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.filter),
-                modifier = Modifier.size(24.dp),
-                contentDescription = "Filter Icon"
-            )
+            IconButton(onClick = {
+
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.filter),
+                    modifier = Modifier.size(24.dp),
+                    contentDescription = "Filter Icon"
+                )
+            }
         },
         modifier = Modifier
             .fillMaxWidth()

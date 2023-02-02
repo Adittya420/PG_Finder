@@ -294,9 +294,9 @@ class Registration : ComponentActivity() {
                         auth.createUserWithEmailAndPassword(email.trim(), password.trim()).addOnCompleteListener {task->
                             run {
                                 if (task.isSuccessful) {
+                                    auther.username = username
                                     onClick()
-                                    auther.username = dbAuther.setValue(username).toString()
-                                    Toast.makeText(Context, "Success", Toast.LENGTH_LONG)
+                                    Toast.makeText(Context, username, Toast.LENGTH_LONG)
                                         .show()
                                 } else {
 //                                    val e = task.getException()

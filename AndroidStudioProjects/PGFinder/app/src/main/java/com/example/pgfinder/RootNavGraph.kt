@@ -28,5 +28,10 @@ object Graph {
     const val HOME = "home_graph"
     const val Setings = "details_graph"
     const val editp = "Edits"
+    const val home = "Homepages"
+    const val Create = "CreatePages"
+    const val Getstarted = "gettingstarted"
+
+
 
 }

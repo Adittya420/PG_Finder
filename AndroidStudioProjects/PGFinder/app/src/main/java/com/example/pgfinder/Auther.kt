@@ -10,5 +10,7 @@ import com.google.firebase.database.Exclude
     var age:String? = null,
     var mobNumber: String? = null,
     var email: String? = null,
-    var institute:String? = null
+    var institute:String? = null,
+//    var Details:String? = null
+
 )

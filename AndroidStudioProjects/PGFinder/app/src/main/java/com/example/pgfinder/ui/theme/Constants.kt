@@ -5,6 +5,10 @@ import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Yellow
 
+import androidx.compose.ui.unit.dp
+
+val AppBarCollapsedHeight = 56.dp
+val AppBarExpendedHeight=400.dp
 
 const val NODE_AUTHORS = "authors"
 val FILTER_CONTENT_LIST = listOf(

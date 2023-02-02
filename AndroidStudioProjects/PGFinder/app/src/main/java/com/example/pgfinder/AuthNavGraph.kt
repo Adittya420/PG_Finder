@@ -4,12 +4,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.google.android.gms.auth.api.Auth
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     navigation(
         route = Graph.AUTHENTICATION,
-        startDestination = AuthScreen.Login.route
+        startDestination = AuthScreen.getstarted.route
     ) {
+        composable(route = AuthScreen.getstarted.route){
+            Getstarted (
+                onGetstartedCLick = {
+                    navController.navigate(AuthScreen.Login.route)
+                }
+            )
+        }
         composable(route = AuthScreen.Login.route) {
             LoginScreen(
                 onLoginClick = {
@@ -38,6 +46,9 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     composable(route = AuthScreen.ForgotPass.route){
         ForgotPasswordScreen(
             onRememberClick = {
+                navController.navigate(AuthScreen.Login.route)
+            },
+            onResetClick = {
                 navController.navigate(AuthScreen.Login.route)
             }
         )
@@ -69,6 +80,7 @@ sealed class AuthScreen(val route: String) {
     object Login : AuthScreen(route = "LOGIN")
     object SignUp : AuthScreen(route = "SIGN_UP")
     object ForgotPass :AuthScreen(route = "Forgot")
+    object getstarted :AuthScreen(route = "get")
 //    object ViewProf : AuthScreen(route = "SIGN_UP")
 //    object EditProf : AuthScreen(route = "FORGOT")
 //    object ViewButton : AuthScreen(route = "FORGOT")

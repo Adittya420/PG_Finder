@@ -1,9 +1,7 @@
 package com.example.pgfinder
 
 import android.content.Context
-import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -29,6 +27,23 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import com.example.pgfinder.sealed.DataState
 import com.example.pgfinder.ui.theme.*
+import android.icu.text.CaseMap.Title
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.rememberImagePainter
+
 
 class ProfileActivity : ComponentActivity() {
     lateinit var viewModel: AutherViewModel
@@ -45,13 +60,15 @@ class ProfileActivity : ComponentActivity() {
 }
 
 
+
+
 @Composable
 fun viewProf(
     viewModel: AutherViewModel,
 //    onClick: () -> Unit,
 ){
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().background(PlaceholderColor)
     ) {
 
 
@@ -121,15 +138,187 @@ fun showLazyList(Authers : MutableList<Auther>) {
             items(Authers){
                     Auther1 ->
                 run {
-                    cardItem(Auther1)
+                    show(Auther1)
                 }
             }
 
 
     }
 }
+
+
+
+
 @Composable
- fun cardItem(Auther1: Auther){
+fun Topbar(aut:Auther){
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "")
+                },
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
+                },
+                backgroundColor = Color.White,
+                contentColor = Swiggycolor,
+            )
+        },
+        content = {
+            show(Auther())
+        }
+    )
+}
+
+
+@Composable
+fun show(aut:Auther){
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(6.dp),
+        shape = RoundedCornerShape(15.dp)
+
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
+        ) {
+            Image(painter = painterResource(id = R.drawable.profilepg)  , contentDescription ="Background image" )
+
+        }
+        Box(
+
+        ) {
+
+            Column {
+                Row() {
+
+                }
+                Profileimage()
+                Card(shape = RoundedCornerShape(20.dp),elevation = 10.dp,
+                    modifier = Modifier
+                        .padding(15.dp, 33.dp)
+                        .fillMaxWidth(),
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black) {
+                    Row() {
+                        Text(text = "Name :",modifier = Modifier.padding(10.dp), fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium)
+                        Text(text = aut.name1.toString(), modifier = Modifier.padding(10.dp),
+                            fontSize = 16.sp)
+                    }
+
+                }
+                Card(shape = RoundedCornerShape(20.dp),elevation = 10.dp,
+                    modifier = Modifier
+                        .padding(15.dp, 0.dp)
+                        .fillMaxWidth(),
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black) {
+                    Row() {
+                        Text(text = "Username :",modifier = Modifier.padding(10.dp), fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium)
+                        Text(text = aut.username.toString(), modifier = Modifier.padding(10.dp),
+                            fontSize = 16.sp)
+                    }
+                }
+                Card(shape = RoundedCornerShape(20.dp),elevation = 10.dp,
+                    modifier = Modifier
+                        .padding(15.dp, 33.dp)
+                        .fillMaxWidth(),
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black) {
+                    Row() {
+                        Text(text = "Age     :",modifier = Modifier.padding(10.dp), fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium)
+                        Text(text = "20", modifier = Modifier.padding(10.dp),
+                            fontSize = 16.sp)
+                    }
+                }
+                Card(shape = RoundedCornerShape(20.dp),elevation = 10.dp,
+                    modifier = Modifier
+                        .padding(15.dp, 0.dp)
+                        .fillMaxWidth(),
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black) {
+                    Row() {
+                        Text(text = "Phone :",modifier = Modifier.padding(10.dp), fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium)
+                        Text(text = aut.mobNumber.toString(), modifier = Modifier.padding(10.dp),
+                            fontSize = 16.sp)
+                    }
+                }
+                Card(shape = RoundedCornerShape(20.dp),elevation = 10.dp,
+                    modifier = Modifier
+                        .padding(15.dp, 33.dp)
+                        .fillMaxWidth(),
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black) {
+                    Row() {
+                        Text(text = "Email :",modifier = Modifier.padding(10.dp), fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium)
+                        Text(text = user!!.email.toString(), modifier = Modifier.padding(10.dp),
+                            fontSize = 16.sp)
+                    }
+                }
+                Card(shape = RoundedCornerShape(20.dp),elevation = 10.dp,
+                    modifier = Modifier
+                        .padding(15.dp, 0.dp)
+                        .fillMaxWidth(),
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black) {
+                    Row() {
+                        Text(text = "Institute :",modifier = Modifier.padding(10.dp), fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium)
+                        Text(text =aut.institute.toString() , modifier = Modifier.padding(10.dp),
+                            fontSize = 16.sp)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun Profileimage(){
+    val imageUri = rememberSaveable { mutableStateOf("") }
+    val painter = rememberImagePainter(
+        if (imageUri.value.isEmpty())
+            R.drawable.account
+        else
+            imageUri.value
+    )
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(
+            shape = CircleShape,
+            modifier = Modifier
+                .padding(8.dp)
+                .size(100.dp)
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = null,
+                modifier = Modifier
+                    .wrapContentSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+        Text(text = "Profile Picture", fontWeight = FontWeight.Bold,color = Color.Black,
+            fontSize = 20.5.sp, modifier = Modifier.padding(5.dp))
+    }
+}
+@Composable
+ fun cardItem(Aut: Auther) {
     Column(
 //        modifier = Modifier
 //            .fillMaxSize()
@@ -140,69 +329,98 @@ fun showLazyList(Authers : MutableList<Auther>) {
     ) {
 
         Surface(
-            shape = BottomBoxShape.large,
+            shape = RoundedCornerShape(10.dp),
             color = Color(0xFFDAE1E7),
             modifier = Modifier
-                .height(170.dp)
+                .height(570.dp)
                 .padding(10.dp)
 //                    .shadow(10.dp),
             //shadowElevation = 10.dp
         ) {
-            Icon(painter = painterResource(id = R.drawable.profile_pic), contentDescription = "Profile Pic",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),)
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(2f),
+                    verticalArrangement = Arrangement.Center
+                ) {
+//
+                    Spacer(modifier = Modifier.height(1.dp))
 
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .padding(10.dp)
-            ) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = Auther1.name1!!)
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-                    .padding(10.dp)
-            ) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = Auther1.age!!)
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp)
-                    .padding(10.dp)
-            ) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = Auther1.mobNumber!!)
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(450.dp)
-                    .padding(10.dp)
-            ) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = Auther1.institute!!)
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(550.dp)
-                    .padding(10.dp)
-            ) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    if (user != null) {
-                        Text(text = user.email.toString())
-                    }
+                    Text(
+                        text = "Name : ${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = "${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = "${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = "${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = "${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = "${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = "${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(1.dp))
+
+                    Text(
+                        text = "${Aut.name1.toString()}",
+                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.overline,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+
                 }
             }
         }
@@ -242,14 +460,16 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
         content = {
             Column(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .background(PlaceholderColor),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
 
                 Text(
                     text = "Edit Profile", fontWeight = FontWeight.Bold, fontSize = 26.sp,
-                    modifier = Modifier.padding(7.dp, 45.dp)
+                    modifier = Modifier.padding(7.dp, 45.dp),
+                    color = SecondaryColor
                 )
 
                 var Name1 by remember { mutableStateOf(value = "") }
@@ -269,7 +489,8 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
                         )
                     },
                     value = Name1,
-                    label = { Text(text = "Name") },
+                    label = { Text(text = "Name",
+                        color = SecondaryColor) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text
                     ),
@@ -292,7 +513,8 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
                     },
 
                     value = MOb1,
-                    label = { Text(text = "Mobile") },
+                    label = { Text(text = "Mobile",
+                        color = SecondaryColor) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Phone
                     ),
@@ -317,7 +539,8 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
                         )
                     },
                     value = EMAil,
-                    label = { Text(text = "email") },
+                    label = { Text(text = "Email",
+                        color = SecondaryColor) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     ),
@@ -339,7 +562,8 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
                         )
                     },
                     value = INSTitute,
-                    label = { Text(text = "Institute") },
+                    label = { Text(text = "Institute",
+                        color = SecondaryColor) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text
                     ),
@@ -361,7 +585,8 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
                         )
                     },
                     value = AGE,
-                    label = { Text(text = "Age") },
+                    label = { Text(text = "Age",
+                        color = SecondaryColor) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
                     ),
@@ -376,6 +601,7 @@ fun EditProfileScreen(viewModel:AutherViewModel) {
                 )
                 Button(
                     onClick = {
+                        user?.displayName.equals(Name1)
                         val name = Name1.toString().trim()
                         val age = AGE
                         val mobNumber = MOb1

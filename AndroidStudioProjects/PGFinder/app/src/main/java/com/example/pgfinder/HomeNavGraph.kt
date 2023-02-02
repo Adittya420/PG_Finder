@@ -1,34 +1,31 @@
 package com.example.pgfinder
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import com.example.pgfinder.ui.theme.home
 
 
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
+fun HomeNavGraphOriginal(navController: NavHostController) {
     NavHost(
         navController = navController,
-        route = Graph.Setings,
-        startDestination = BottomBarScreen.Settings.route
+        route = Graph.home,
+        startDestination = BottomBarScreen.Home.route
     ) {
-        composable(route = BottomBarScreen.Settings.route) {
-           ProfileCardUI(
-               onViewButtonClick = {
-                   navController.navigate(SettingNav.ViewProf.route)
-               } ,
-               OnCustumisationClick = {
-                   navController.navigate(SettingNav.EditProf.route)
-               },
-
-           )
+        composable(route = BottomBarScreen.Home.route) {
+            home(onReadClick ={
+                navController.navigate(HomeNavGraph.ViewPG.route)
+            })
         }
+        composable(route = HomeNavGraph.ViewPG.route){
+            MainFragment(PGdata())
+        }
+
+//        composable(route = )
 //        composable(route = SettingNav.EditProf.route) {
 //            EditProfileScreen(AutherViewModel())
-//
 //        }
 //        composable(route = SettingNav.ViewProf.route) {
 //            viewProf (
@@ -36,10 +33,12 @@ fun HomeNavGraph(navController: NavHostController) {
 //                    navController.navigate(SettingNav.EditProf.route)
 //                }
 //                    )
-//
-//
-//
 //        }
         detailsNavGraph(navController = navController)
     }
+}
+
+sealed class HomeNavGraph(val route : String){
+    object ViewPG : HomeNavGraph(route = "ViewPG")
+//    object  : HomeNavGraph(route = "ViewPG")
 }

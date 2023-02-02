@@ -17,10 +17,15 @@ fun BottomNavGraph(navController: NavHostController) {
         startDestination = BottomBarScreen.Home.route
     ) {
         composable(route = BottomBarScreen.Home.route) {
-            home()
+            home(onReadClick = {
+                navController.navigate(Graph.home)
+
+            })
+
+
         }
         composable(route = BottomBarScreen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(MessagesViewModel())
         }
         composable(route = BottomBarScreen.Settings.route) {
             ProfileCardUI(
@@ -29,8 +34,7 @@ fun BottomNavGraph(navController: NavHostController) {
                 },
                 OnCustumisationClick = {
                     navController.navigate(Graph.editp)
-                }
-
+                },
             )
 
 
@@ -48,8 +52,11 @@ fun BottomNavGraph(navController: NavHostController) {
 //        }
 //
         }
-        composable(route = BottomBarScreen.Create.route){
-            MyCreates()
+        composable(route = BottomBarScreen.Creates.route){
+//            MyCreates(PGviewModel())
+              ToCreate(onCreateclick = {
+                  navController.navigate(Graph.Create)
+              })
         }
         detailsNavGraph(navController = navController)
 
@@ -74,12 +81,29 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
 //            EditProfileScreen(AutherViewModel())
 //        }
     }
+
     navigation(
         route = Graph.editp,
         startDestination = SettingNav.EditProf.route
     ){
         composable(route = SettingNav.EditProf.route){
             EditProfileScreen(AutherViewModel())
+        }
+    }
+    navigation(
+        route = Graph.home,
+        startDestination = HomeNavGraph.ViewPG.route
+    ){
+        composable(route = HomeNavGraph.ViewPG.route){
+            MainFragment(PGdata())
+        }
+    }
+    navigation(
+        route = Graph.Create,
+        startDestination = CreateNav.CreatePG.route
+    ){
+        composable(route = CreateNav.CreatePG.route){
+            MyCreates(PGviewModel())
         }
     }
 }

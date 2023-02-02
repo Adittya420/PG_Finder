@@ -1,7 +1,9 @@
 package com.example.pgfinder
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -61,8 +63,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PGFinderTheme {
-                RootNavigationGraph(navController = rememberNavController())
 
+                RootNavigationGraph(navController = rememberNavController())
             }
         }
 
@@ -257,6 +259,7 @@ private lateinit var auth: FirebaseAuth
                                                     "SUCCESS",
                                                     Toast.LENGTH_LONG
                                                 ).show()
+                                                //user
 //                    Toast.makeText( this,"The user has succesfully logged in", Toast.LENGTH_SHORT).show()
                                             } else {
                                                 Toast.makeText(
@@ -330,8 +333,10 @@ private lateinit var auth: FirebaseAuth
 
 @Composable
 fun ForgotPasswordScreen(
-    onRememberClick:()->Unit
+    onRememberClick:()->Unit,
+    onResetClick:()->Unit
 ) {
+    val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     Column (
         modifier = Modifier.fillMaxWidth(),
@@ -425,7 +430,16 @@ fun ForgotPasswordScreen(
 
 
                 Button(
-                    onClick = {},
+                    onClick = {
+                        auth.sendPasswordResetEmail(email.trim())
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d(TAG, "Email sent.")
+                                    Toast.makeText(context , "Reset Link Sent" , Toast.LENGTH_SHORT).show()
+                                    onResetClick()
+                                }
+                            }
+                    },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = PrimaryColor
                     ),

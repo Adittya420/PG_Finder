@@ -16,10 +16,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.childEvents
 import com.google.firebase.ktx.Firebase
 //
 //private lateinit var auth: FirebaseAuth
-val dbAuther =  FirebaseDatabase.getInstance().getReference("Users")
+val dbAuther =  FirebaseDatabase.getInstance().getReference().child("Users")
 class AutherViewModel : ViewModel() {
     var auth = Firebase.auth
     var user = auth.currentUser
@@ -36,7 +37,7 @@ class AutherViewModel : ViewModel() {
 
 
     fun addAuther(auther: Auther){
-        auther.id = dbAuther.push().key
+        auther.id = user!!.uid
         dbAuther.child(auther.id!!).setValue(auther)
             .addOnCompleteListener {
                 if (it.isSuccessful){
@@ -52,28 +53,32 @@ class AutherViewModel : ViewModel() {
     }
 
     fun FetchAuther(){
-        dbAuther.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    var authers = mutableListOf<Auther>()
-                    response.value = DataState.Loading
-                    for (authorSnapshot in snapshot.children){
-                        val author = authorSnapshot.getValue(Auther::class.java)
-                        //                        author?.id = authorSnapshot.key
-                        //                        author?.let { authers.add(it) }
-                        if(author!=null){
-                            authers.add(author)
+        user?.let {
+            FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+    //                print("ADITYA 000000000000" + snapshot.value)
+                    if (snapshot.exists()){
+                        var authers = mutableListOf<Auther>()
+                        response.value = DataState.Loading
+    //                    Toast.makeText(this , snapshot.children.toString() ,Toast.LENGTH_SHORT)
+                        for (authorSnapshot in snapshot.children) {
+                            val author = authorSnapshot.getValue(Auther::class.java)
+                            //                        author?.id = authorSnapshot.key
+                            //                        author?.let { authers.add(it) }
+                            if (author != null && author.id == user!!.uid) {
+                                authers.add(author)
+                            }
+                            response.value = DataState.Success(authers)
                         }
-                        response.value = DataState.Success(authers)
                     }
                     //                    _authers.value = authers
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                response.value = DataState.Failure(error.message)
-            }
+                override fun onCancelled(error: DatabaseError) {
+                    response.value = DataState.Failure(error.message)
+                }
 
-        })
+            })
+        }
     }
 }

@@ -20,7 +20,7 @@ sealed class BottomBarScreen(
         icon = Icons.Default.AccountCircle
     )
 
-    object Create : BottomBarScreen(
+    object Creates : BottomBarScreen(
         route = "create",
         title = "My Creates",
         icon = Icons.Default.Edit

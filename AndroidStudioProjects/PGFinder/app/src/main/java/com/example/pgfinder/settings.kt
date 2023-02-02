@@ -70,8 +70,7 @@ fun HeaderText() {
 @Composable
 fun ProfileCardUI(
     onViewButtonClick: () -> Unit,
-    OnCustumisationClick: () -> Unit
-
+    OnCustumisationClick: () -> Unit,
     ) {
     auth = Firebase.auth
     val user = auth.currentUser
@@ -222,31 +221,32 @@ fun ProfileCardUI(
                 onClick = {}
             )
         }
-        Button(
-            modifier = androidx.compose.ui.Modifier.padding(top = 10.dp),
-            onClick = {
-//                onViewButtonClick()
-                      auth.signOut()
-
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = PrimaryColor
-            ),
-            contentPadding = PaddingValues(horizontal = 30.dp),
-            elevation = ButtonDefaults.elevation(
-                defaultElevation = 0.dp,
-                pressedElevation = 2.dp
-            ),
-            shape = Shapes1.medium
-        ) {
-            Text(
-                text = "SignOut",
-                fontFamily = Poppins,
-                color = SecondaryColor,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+//        Button(
+//            modifier = androidx.compose.ui.Modifier.padding(top = 10.dp),
+//            onClick = {
+////                onViewButtonClick()
+//                auth.signOut()
+//
+//
+//            },
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = PrimaryColor
+//            ),
+//            contentPadding = PaddingValues(horizontal = 30.dp),
+//            elevation = ButtonDefaults.elevation(
+//                defaultElevation = 0.dp,
+//                pressedElevation = 2.dp
+//            ),
+//            shape = Shapes1.medium
+//        ) {
+//            Text(
+//                text = "SignOut",
+//                fontFamily = Poppins,
+//                color = SecondaryColor,
+//                fontSize = 12.sp,
+//                fontWeight = FontWeight.Bold
+//            )
+//        }
     }
 
 }
