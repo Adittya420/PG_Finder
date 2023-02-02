@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +31,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            navigation()
+             SplashScreenTheme(){
+                 androidx.compose.material.Surface(
+                     modifier = Modifier.fillMaxSize(),
+                     color = Color.White
+                 ) {
+                     navigation()
+                 }
+             }
 
         }
     }
@@ -55,7 +63,7 @@ fun navigation() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Main Screen", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+                //Text(text = "Main Screen", fontSize = 30.sp, fontWeight = FontWeight.Bold)
             }
 
         }
@@ -66,7 +74,7 @@ fun navigation() {
 fun SplashScreen(navController: NavController) {
 
     LaunchedEffect(key1 = true) {
-        delay(5000L)
+        delay(2000L)
         navController.navigate("main_screen")
     }
 
@@ -77,11 +85,11 @@ fun SplashScreen(navController: NavController) {
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.pg_finder_nobc),
             "",
             modifier = Modifier
-                .width(200.dp)
-                .height(200.dp)
+                .width(300.dp)
+                .height(800.dp)
         )
     }
 }
